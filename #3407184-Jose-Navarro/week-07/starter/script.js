@@ -1,180 +1,104 @@
-// ============================================
-// PROYECTO SEMANA 07 — Librería de Funciones
-// Dominio: [Tu dominio asignado]
-// ============================================
-
-// NOTA PARA EL APRENDIZ:
-// Adapta este proyecto a tu dominio asignado.
-// Todos los nombres genéricos (item, value, category, etc.)
-// deben reemplazarse con nombres específicos de tu dominio.
-//
-// Ejemplos de adaptación:
-// - Biblioteca: book, author, available, fine
-// - Farmacia: medicine, price, stock, laboratory
-// - Gimnasio: member, plan, active, bmi
-// - Restaurante: dish, price, available, category
-// - Banco: account, balance, interest, active
-// - Hospital: patient, age, hasAppointment, doctor
-
 "use strict"; // activa el modo estricto — mejores errores
 
 // ============================================
 // SECCIÓN 1: Constantes y datos del dominio
 // ============================================
 
-// TODO: Define las constantes globales de tu dominio
-// Ejemplo: const TAX_RATE = 0.19;
-//          const CURRENCY = "USD";
-//          const DOMAIN_NAME = "Mi Dominio";
-const DOMAIN_NAME = "Mi Dominio";
-const VALUE_LABEL = "valor"; // Ej: "precio", "cantidad", "duración"
+// Constantes globales del dominio Agrotech
+const DOMAIN_NAME = "AgroTech Solutions - Asesoría Agronómica";
+const VALUE_LABEL = "Hectáreas"; 
+const NITRÓGENO_OPTIMO = 50; // mg/kg ideales en suelo
 
-// TODO: Define un array con al menos 5 elementos de tu dominio.
-// Cada elemento debe ser un objeto con propiedades relevantes.
-// Ejemplo (Biblioteca):
-// const items = [
-//   { id: 1, name: "El Quijote",  category: "clásico",    value: 15,  active: true },
-//   { id: 2, name: "1984",        category: "distopía",   value: 12,  active: true },
-//   ...
-// ];
-const items = [
-  // TODO: Agrega tus elementos aquí
+// Array con 6 lotes de cultivo (elementos del dominio)
+const lotes = [
+  { id: 101, nombre: "Lote Maíz Norte", categoria: "Cereales", area: 15, nitrogeno: 45, activo: true },
+  { id: 102, nombre: "Lote Soja Este", categoria: "Oleaginosas", area: 30, nitrogeno: 12, activo: true },
+  { id: 103, nombre: "Invernadero Tomate", categoria: "Hortalizas", area: 5, nitrogeno: 38, activo: false },
+  { id: 104, nombre: "Lote Trigo Sur", categoria: "Cereales", area: 20, nitrogeno: 25, activo: true },
+  { id: 105, nombre: "Lote Girasol Central", categoria: "Oleaginosas", area: 25, nitrogeno: 52, activo: true },
+  { id: 106, nombre: "Huerta Orgánica", categoria: "Hortalizas", area: 2, nitrogeno: 18, activo: false }
 ];
 
 // ============================================
-// SECCIÓN 2: Función de formato
+// SECCIÓN 2: Función de formato (Arrow Function)
 // ============================================
 
-// TODO: Implementa una arrow function que reciba un elemento
-// y devuelva un string formateado para mostrar en pantalla.
-// Debe usar template literals y al menos 2 propiedades del elemento.
-//
-// Ejemplo (Biblioteca):
-// const formatItem = (book) =>
-//   `📚 ${book.name} [${book.category}] — $${book.value}`;
-//
-// Ejemplo (Farmacia):
-// const formatItem = (medicine) =>
-//   `💊 ${medicine.name} — Stock: ${medicine.stock} — $${medicine.price}`;
-
-const formatItem = (item) => {
-  // TODO: Implementar usando template literals
-  // 1. Incluir el nombre del elemento
-  // 2. Incluir la categoría o tipo
-  // 3. Incluir el valor numérico relevante
-  return `${item.name}`; // TODO: Expandir este template
-};
+// Devuelve un string formateado con el nombre, categoría y área del lote
+const formatItem = (lote) => 
+  `🌱 ${lote.nombre.padEnd(20)} | Tipo: ${lote.categoria.padEnd(12)} | Superficie: ${lote.area} ha`;
 
 // ============================================
 // SECCIÓN 3: Función de cálculo (pura)
 // ============================================
 
-// TODO: Implementa una función pura que calcule algún valor relevante
-// del dominio a partir de parámetros numéricos.
-// Debe ser una función pura: mismo input → siempre mismo output.
-//
-// Ejemplo (Biblioteca): calcular multa por días de retraso
-// const calculateValue = (baseValue, factor) => baseValue * factor;
-//
-// Ejemplo (Farmacia): calcular total de compra con descuento
-// const calculateValue = (price, quantity, discountPct = 0) =>
-//   +(price * quantity * (1 - discountPct / 100)).toFixed(2);
-
-const calculateValue = (baseValue, factor = 1) => {
-  // TODO: Implementar el cálculo relevante para tu dominio
-  return baseValue * factor;
+// Calcula el déficit de nitrógeno multiplicado por el área para saber cuánto fertilizante falta
+const calculateValue = (nivelActual, area, factorConversion = 0.5) => {
+  const deficit = NITRÓGENO_OPTIMO - nivelActual;
+  // Si el nitrógeno es mayor al óptimo, el déficit es 0
+  return deficit > 0 ? +(deficit * area * factorConversion).toFixed(2) : 0;
 };
 
 // ============================================
 // SECCIÓN 4: Función de validación
 // ============================================
 
-// TODO: Implementa una función que reciba un elemento y devuelva
-// true o false según una regla del dominio.
-//
-// Ejemplo (Biblioteca): verificar si el libro está disponible
-// const isValid = (book) => book.available === true;
-//
-// Ejemplo (Farmacia): verificar si hay suficiente stock
-// const isValid = (medicine) => medicine.stock > 0;
-//
-// Ejemplo (Gimnasio): verificar si el miembro está activo
-// const isValid = (member) => member.active === true;
-
-const isValid = (item) => {
-  // TODO: Implementar la condición de validez de tu dominio
-  return item.active === true;
-};
+// Un lote es "válido para monitoreo" si está marcado como activo
+const isValid = (lote) => lote.activo === true;
 
 // ============================================
 // SECCIÓN 5: Función con parámetro por defecto
 // ============================================
 
-// TODO: Implementa una función que use al menos un parámetro
-// por defecto significativo para tu dominio.
-//
-// Ejemplo (Biblioteca): crear un registro con valores por defecto
-// const createRecord = (name, category = "general", available = true) =>
-//   ({ name, category, available });
-//
-// Ejemplo (Farmacia): formatear precio con moneda por defecto
-// const formatPrice = (price, currency = "USD", showTax = false) =>
-//   showTax ? `${currency} ${(price * 1.19).toFixed(2)}` : `${currency} ${price.toFixed(2)}`;
-
-const formatWithDefault = (value, label = VALUE_LABEL, currency = "") => {
-  // TODO: Implementar con parámetros por defecto relevantes al dominio
-  return currency
-    ? `${label}: ${currency} ${value}`
-    : `${label}: ${value}`;
+// Genera un mensaje de estado con la moneda o unidad por defecto
+const formatWithDefault = (valor, etiqueta = "Resultado", unidad = "unidades") => {
+  return `${etiqueta}: ${valor} ${unidad}`;
 };
 
 // ============================================
 // SECCIÓN 6: Reporte usando las funciones
 // ============================================
 
-// TODO: Genera un reporte completo usando las funciones anteriores.
-// Debe:
-// 1. Mostrar el título del dominio
-// 2. Recorrer items con for...of y mostrar cada uno con formatItem()
-// 3. Contar los elementos válidos con isValid()
-// 4. Calcular el total o promedio con calculateValue()
-// 5. Mostrar el resumen final con formatWithDefault()
+console.log(`\n${"═".repeat(60)}`);
+console.log(`     REPORTE TÉCNICO — ${DOMAIN_NAME}`);
+console.log(`${"═".repeat(60)}`);
 
-console.log(`\n${"═".repeat(45)}`);
-console.log(`   REPORTE — ${DOMAIN_NAME}`);
-console.log(`${"═".repeat(45)}`);
-
-// TODO: Reemplaza este código de ejemplo con la implementación real
-
-if (items.length === 0) {
-  console.log("\n⚠️  No hay elementos. Agrega datos en la Sección 1.");
+if (lotes.length === 0) {
+  console.log("\n⚠️ No hay lotes registrados en el sistema.");
 } else {
   // --- Listado ---
-  console.log("\n📋 Listado:");
+  console.log("\n📋 ESTADO ACTUAL DE LOS LOTES:");
   let lineNumber = 1;
-  for (const item of items) {
-    // TODO: Usa formatItem(item) para mostrar cada elemento
-    console.log(`  ${lineNumber}. ${formatItem(item)}`);
+  for (const lote of lotes) {
+    console.log(`  ${lineNumber}. ${formatItem(lote)}`);
     lineNumber++;
   }
 
   // --- Validación ---
-  let validCount = 0;
-  for (const item of items) {
-    // TODO: Usa isValid(item) para contar los válidos
-    if (isValid(item)) {
-      validCount++;
+  let lotesActivos = 0;
+  for (const lote of lotes) {
+    if (isValid(lote)) {
+      lotesActivos++;
     }
   }
-  console.log(`\n✅ Elementos válidos: ${validCount} / ${items.length}`);
+  console.log(`\n✅ Lotes en monitoreo activo: ${lotesActivos} / ${lotes.length}`);
 
   // --- Cálculo ---
-  let totalValue = 0;
-  for (const item of items) {
-    // TODO: Usa calculateValue() con las propiedades de tu item
-    totalValue += calculateValue(item.value ?? 0);
+  let totalFertilizante = 0;
+  let areaTotal = 0;
+
+  for (const lote of lotes) {
+    // Sumamos el área total
+    areaTotal += lote.area;
+    // Usamos calculateValue() para proyectar la necesidad de insumos
+    totalFertilizante += calculateValue(lote.nitrogeno, lote.area);
   }
-  console.log(formatWithDefault(totalValue, `Total ${VALUE_LABEL}`));
+
+  console.log("\n📊 RESUMEN DE INSUMOS Y SUPERFICIE:");
+  // Usamos la función con parámetros por defecto
+  console.log(`  > ${formatWithDefault(areaTotal, "Superficie total gestionada", "hectáreas")}`);
+  console.log(`  > ${formatWithDefault(totalFertilizante.toFixed(1), "Fertilizante necesario", "kg")}`);
 }
 
-console.log(`\n${"═".repeat(45)}\n`);
+console.log(`\n${"═".repeat(60)}`);
+console.log("       FIN DEL INFORME - SISTEMA AGROTECH v1.0");
+console.log(`${"═".repeat(60)}\n`);
