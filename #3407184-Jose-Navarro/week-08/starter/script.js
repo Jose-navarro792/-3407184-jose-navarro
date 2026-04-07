@@ -1,167 +1,137 @@
 // ============================================
 // SEMANA 08 — PROYECTO: Gestión de Inventario
+// Dominio: Asesoría Agronómica y Agrotech
 // ============================================
-// INSTRUCCIONES:
-// 1. Reemplaza DOMAIN_NAME con el nombre de tu dominio asignado
-// 2. Reemplaza VALUE_LABEL con la etiqueta de tu unidad de valor
-//    Ejemplos: "unidades", "libros", "medicamentos", "miembros"
-// 3. Define tu array items con objetos de tu dominio
-// 4. Completa cada TODO con la implementación contextualizada
-// ============================================
+
+"use strict";
 
 // ---- CONFIGURA TU DOMINIO ----
-const DOMAIN_NAME = "Mi Inventario"; // TODO: Cambiar por tu dominio
-const VALUE_LABEL = "elementos";     // TODO: Cambiar por unidad de tu dominio
+const DOMAIN_NAME = "AgroTech Insumos"; 
+const VALUE_LABEL = "productos agrícolas"; 
 
 // ============================================
-// 1. ARRAY INICIAL — Define tu inventario
+// 1. ARRAY INICIAL — Inventario de Insumos
 // ============================================
-
-// TODO: Definir el array con mínimo 5 objetos de tu dominio.
-// Cada objeto debe tener:
-//   - id: número único
-//   - name: nombre del elemento
-//   - [propiedad numérica]: precio, cantidad, puntuación, etc.
-//   - [propiedad booleana]: active, available, inStock, etc.
-//   - [otras 2+ propiedades relevantes a tu dominio]
-//
-// Ejemplos por dominio:
-// Biblioteca:  { id, name, author, year, available: true }
-// Farmacia:    { id, name, price, stock, requiresPrescription: false }
-// Gimnasio:    { id, name, memberSince, plan, active: true }
-// Restaurante: { id, name, price, category, available: true }
 
 const items = [
-  // TODO: Agrega al menos 5 objetos de tu dominio
+  { id: 101, name: "Semilla Maíz Híbrido", precio: 120, stock: 50, categoria: "Semillas", disponible: true },
+  { id: 102, name: "Fertilizante Urea", precio: 85, stock: 200, categoria: "Químicos", disponible: true },
+  { id: 103, name: "Fungicida Orgánico", precio: 45, stock: 0, categoria: "Biológicos", disponible: false },
+  { id: 104, name: "Herbicida Glifosato", precio: 60, stock: 15, categoria: "Químicos", disponible: true },
+  { id: 105, name: "Semilla Soja Premium", precio: 110, stock: 80, categoria: "Semillas", disponible: true }
 ];
 
 // ============================================
 // 2. FUNCIONES DE GESTIÓN
 // ============================================
 
-/**
- * Agrega un nuevo elemento al inventario
- * @param {Object} newItem - Elemento a agregar
- */
 const addItem = (newItem) => {
-  // TODO: Usar push para agregar newItem al array items
-  // console.log(`Agregado: ${newItem.name}`);
+  items.push(newItem);
+  console.log(`✅ Agregado al final: ${newItem.name}`);
 };
 
-/**
- * Elimina el último elemento del inventario
- * @returns {Object} El elemento eliminado
- */
 const removeLastItem = () => {
-  // TODO: Usar pop para eliminar y retornar el último elemento
-  // Guardar el resultado en una variable y mostrar el nombre
+  const removed = items.pop();
+  if (removed) console.log(`🗑️ Eliminado último: ${removed.name}`);
+  return removed;
 };
 
-/**
- * Agrega un elemento prioritario al inicio del inventario
- * @param {Object} priorityItem - Elemento a agregar con prioridad
- */
 const addPriorityItem = (priorityItem) => {
-  // TODO: Usar unshift para agregar priorityItem al inicio de items
-  // console.log(`Elemento prioritario agregado: ${priorityItem.name}`);
+  items.unshift(priorityItem);
+  console.log(`🚀 Prioridad agregada al inicio: ${priorityItem.name}`);
 };
 
-/**
- * Elimina un elemento por su posición (índice)
- * @param {number} index - Posición del elemento a eliminar
- */
 const removeByIndex = (index) => {
-  // TODO: Usar splice para eliminar 1 elemento en la posición index
-  // Mostrar el nombre del elemento eliminado
+  const removed = items.splice(index, 1);
+  if (removed.length > 0) {
+    console.log(`✂️ Eliminado por posición [${index}]: ${removed[0].name}`);
+  }
 };
 
-/**
- * Obtiene todos los elementos activos/disponibles
- * @returns {Array} Array de elementos activos
- */
 const getActiveItems = () => {
-  // TODO: Usar filter para retornar solo los elementos con la propiedad
-  // booleana en true (ajusta el nombre de la propiedad a tu dominio)
-  return [];
+  // Filtramos por la propiedad booleana 'disponible'
+  return items.filter(item => item.disponible === true);
 };
 
-/**
- * Busca un elemento por su nombre
- * @param {string} name - Nombre a buscar
- * @returns {Object|undefined} El elemento encontrado o undefined
- */
 const findByName = (name) => {
-  // TODO: Usar find para retornar el primer elemento cuyo name coincida
-  return null;
+  return items.find(item => item.name.toLowerCase() === name.toLowerCase());
 };
 
-/**
- * Formatea un elemento para mostrar en el reporte
- * @param {Object} item - Elemento a formatear
- * @returns {string} Texto formateado
- */
 const formatItem = (item) => {
-  // TODO: Retornar un string con la información relevante del elemento
-  // Usar template literals y mostrar las propiedades más importantes
-  // Ejemplo (adaptar al dominio):
-  // return `[${item.id}] ${item.name} — ...propiedades...`;
-  return `[${item.id}] ${item.name}`;
+  const status = item.disponible ? "✅" : "❌";
+  return `[ID:${item.id}] ${item.name.padEnd(22)} | ${item.categoria.padEnd(12)} | Stock: ${item.stock.toString().padStart(3)} | ${status}`;
 };
 
 // ============================================
 // 3. REPORTE
 // ============================================
 
-console.log(`\n${"=".repeat(50)}`);
+console.log(`\n${"=".repeat(65)}`);
 console.log(`📦 GESTIÓN DE ${DOMAIN_NAME.toUpperCase()}`);
-console.log(`${"=".repeat(50)}\n`);
+console.log(`${"=".repeat(65)}\n`);
 
 // Estado inicial
 console.log(`📋 Inventario inicial (${items.length} ${VALUE_LABEL}):`);
-// TODO: Usar forEach para mostrar cada elemento con formatItem
 items.forEach((item) => {
   console.log(`  ${formatItem(item)}`);
 });
 
 console.log("\n--- Operaciones de mutación ---\n");
 
-// TODO: Crear un nuevo elemento de tu dominio y usar addItem para agregarlo
-// Ejemplo: addItem({ id: 6, name: "Nuevo Elemento", ..., active: true });
+// 1. Agregar nuevo (Push)
+addItem({ id: 106, name: "Insecticida Eco", precio: 55, stock: 30, categoria: "Biológicos", disponible: true });
 
-// TODO: Usar addPriorityItem para agregar un elemento prioritario
-// Ejemplo: addPriorityItem({ id: 0, name: "Elemento Prioritario", ..., active: true });
+// 2. Agregar prioritario (Unshift)
+addPriorityItem({ id: 100, name: "Kit Emergencia Plagas", precio: 25, stock: 10, categoria: "Varios", disponible: true });
 
-// TODO: Usar removeByIndex para eliminar un elemento del medio
-// Ejemplo: removeByIndex(2);
+// 3. Eliminar del medio (Splice)
+removeByIndex(3); 
 
-// TODO: Usar removeLastItem para quitar el último elemento
+// 4. Eliminar último (Pop)
+removeLastItem();
 
 console.log("\n--- Inventario después de mutaciones ---\n");
-// TODO: Mostrar el inventario actualizado con forEach + formatItem
 items.forEach((item) => {
   console.log(`  ${formatItem(item)}`);
 });
 
 console.log("\n--- Búsqueda y filtrado ---\n");
 
-// TODO: Usar find para buscar un elemento específico por nombre
-// Mostrar el resultado
+// Búsqueda con find
+const buscado = "Fertilizante Urea";
+const encontrado = findByName(buscado);
+console.log(`🔍 Buscando "${buscado}":`, encontrado ? `Encontrado (Stock: ${encontrado.stock})` : "No hallado");
 
-// TODO: Usar getActiveItems() y mostrar cuántos están activos
+// Filtrado con filter
+const activos = getActiveItems();
+console.log(`📊 Productos disponibles para despacho: ${activos.length}`);
 
-// TODO: Crear un snapshot inmutable con spread [...items]
-// y agregar un elemento extra sin modificar items
-console.log("\n--- Transformación con map ---\n");
+console.log("\n--- Transformación con map e Inmutabilidad ---\n");
 
-// TODO: Usar map para crear un array de solo los nombres de los elementos
-// Mostrar los nombres
+// Operador Spread para snapshot inmutable y agregar un extra
+const inventarioCopia = [...items, { id: 999, name: "Producto Temporal", disponible: false }];
+console.log(`📸 Snapshot creado (Copia con Spread tiene ${inventarioCopia.length} elementos)`);
 
-// TODO: Usar map para crear un array con alguna propiedad numérica transformada
-// (ej: precios con descuento, cantidades en otra unidad, etc.)
+// Map para extraer nombres
+const listaNombres = items.map(item => item.name);
+console.log("📝 Lista de nombres en inventario:", listaNombres.join(", "));
+
+// Map para transformar valores (Precios con 10% de descuento por temporada)
+const preciosDescuento = items.map(item => ({
+    nombre: item.name,
+    precioOferta: (item.precio * 0.9).toFixed(2)
+}));
+console.log("💰 Precios con descuento (Temporada de Siembra):");
+preciosDescuento.forEach(p => console.log(`   - ${p.nombre}: $${p.precioOferta}`));
 
 console.log("\n--- Resumen final ---\n");
-console.log(`Total en inventario: ${items.length} ${VALUE_LABEL}`);
-// TODO: mostrar total de activos vs total general
+console.log(`Total en inventario real: ${items.length} ${VALUE_LABEL}`);
+const activeCount = getActiveItems().length;
+console.log(`Disponibles: ${activeCount} | Agotados: ${items.length - activeCount}`);
+
+console.log(`\n${"=".repeat(65)}`);
+console.log("✅ Reporte Agrotech completado");
+console.log(`${"=".repeat(65)}\n`);
 const activeCount = getActiveItems().length;
 console.log(`Activos: ${activeCount} | Inactivos: ${items.length - activeCount}`);
 
