@@ -1,60 +1,35 @@
 // ============================================
 // PROYECTO SEMANA 06: Reporte con Bucles
-// Dominio: [tu dominio asignado]
-// ============================================
-//
-// INSTRUCCIONES:
-// 1. Reemplaza todos los elementos genéricos
-//    con datos reales de TU dominio asignado.
-// 2. Completa cada sección marcada con TODO.
-// 3. Ejecuta con: node starter/script.js
+// Dominio: Asesoría Agronómica y Agrotech
 // ============================================
 
 // ============================================
-// SECCIÓN 1: Datos del dominio
+// SECCIÓN 1: Datos del dominio (Lotes de Cultivo)
 // ============================================
-// Cada objeto representa un elemento de tu dominio.
-// Adapta las propiedades según tu contexto.
-//
-// NOTA PARA EL APRENDIZ:
-// Ejemplos de adaptación:
-//   Biblioteca  → { name: "El Principito", category: "ficción", value: 96 }
-//   Farmacia    → { name: "Ibuprofeno", category: "analgésico", value: 150 }
-//   Gimnasio    → { name: "Bicicleta", category: "cardio", value: 6.5 }
-//   Restaurante → { name: "Ensalada César", category: "entrada", value: 8.5 }
-
-// TODO: Define al menos 6 elementos de tu dominio
-// Reemplaza el nombre de la constante por algo representativo:
-// (ej: books, medicines, machines, dishes, patients...)
-const items = [
-  // TODO: Agrega tus elementos aquí
-  // { name: "nombre del elemento", category: "categoría", value: 0 }
+const lotes = [
+  { name: "Lote Maíz Norte", category: "Cereales", value: 45 },
+  { name: "Lote Soja Este", category: "Oleaginosas", value: 12 },
+  { name: "Invernadero Tomate", category: "Hortalizas", value: 38 },
+  { name: "Lote Trigo Sur", category: "Cereales", value: 25 },
+  { name: "Lote Girasol", category: "Oleaginosas", value: 50 },
+  { name: "Huerta Orgánica", category: "Hortalizas", value: 15 }
 ];
 
-// TODO: Define las categorías relevantes para tu dominio
-// (ej: para Biblioteca sería ["ficción", "no-ficción", "ciencia"])
-const categories = [
-  // TODO: lista tus categorías
-];
+const categories = ["Cereales", "Oleaginosas", "Hortalizas"];
 
-// TODO: Define un nombre descriptivo para el valor numérico
-// (ej: "páginas", "stock", "horas de uso", "precio", "duración")
-const valueLabel = "valor"; // ← cambiar
+// Usamos el nivel de Nitrógeno como valor numérico relevante
+const valueLabel = "Nitrógeno (mg/kg)"; 
 
 // ============================================
 // SECCIÓN 2: Listado completo con for...of
 // ============================================
-console.log("=== LISTADO COMPLETO ===");
+console.log("=== LISTADO COMPLETO DE LOTES ===");
 
-// TODO: Usa for...of para imprimir cada elemento
-// Formato sugerido: "1. [nombre] — [categoría] — [valueLabel]: [value]"
-// Pista: usa una variable externa para el contador de número de línea
 let lineNumber = 0;
-
-for (const item of items) {
+for (const lote of lotes) {
   lineNumber++;
-  // TODO: Reemplaza este console.log con la información de tu dominio
-  console.log(`${lineNumber}. ${item.name}`);
+  // Imprimimos la información básica de cada lote
+  console.log(`${lineNumber}. ${lote.name} — [${lote.category}] — ${valueLabel}: ${lote.value}`);
 }
 
 console.log("");
@@ -64,19 +39,17 @@ console.log("");
 // ============================================
 console.log("=== CONTEO POR CATEGORÍA ===");
 
-// TODO: Para cada categoría, cuenta cuántos elementos tiene
-// Pista: usa un for...of exterior (categorías) con un contador
-//        y un for...of interior (items) para contar
-
 for (const category of categories) {
   let count = 0;
 
-  // TODO: Completa el bucle para contar items de esta categoría
-  // for (const item of items) {
-  //   if (item.category === category) count++;
-  // }
+  // Bucle interior para contar cuántos lotes pertenecen a la categoría actual
+  for (const lote of lotes) {
+    if (lote.category === category) {
+        count++;
+    }
+  }
 
-  console.log(`${category}: ${count} elemento(s)`);
+  console.log(`${category}: ${count} lote(s) registrados`);
 }
 
 console.log("");
@@ -84,43 +57,44 @@ console.log("");
 // ============================================
 // SECCIÓN 4: Totales y promedio (acumulador)
 // ============================================
-console.log("=== ESTADÍSTICAS ===");
+console.log("=== ESTADÍSTICAS GENERALES ===");
 
-// TODO: Inicializa el acumulador correctamente
 let totalValue = 0;
 
-for (const item of items) {
-  // TODO: Acumula el valor de cada elemento
-  // totalValue += item.value;
+for (const lote of lotes) {
+  // Acumulamos el valor de nitrógeno de cada lote
+  totalValue += lote.value;
 }
 
-// TODO: Calcula el promedio
-const averageValue = items.length > 0 ? totalValue / items.length : 0;
+const averageValue = lotes.length > 0 ? totalValue / lotes.length : 0;
 
-console.log(`Total ${valueLabel}: ${totalValue}`);
-console.log(`Promedio ${valueLabel}: ${averageValue.toFixed(1)}`);
+console.log(`Total ${valueLabel} acumulado: ${totalValue}`);
+console.log(`Promedio de Fertilidad: ${averageValue.toFixed(1)} mg/kg`);
 
 console.log("");
 
 // ============================================
 // SECCIÓN 5: Máximo y mínimo
 // ============================================
-console.log("=== MÁXIMO Y MÍNIMO ===");
+console.log("=== ANÁLISIS DE FERTILIDAD (MÁX/MÍN) ===");
 
-// TODO: Variables para el máximo y mínimo
-// Pista: inicializa con items[0] si el array no está vacío
-let maxItem = items[0] ?? null;
-let minItem = items[0] ?? null;
+let maxItem = lotes[0] ?? null;
+let minItem = lotes[0] ?? null;
 
-if (items.length > 0) {
-  // TODO: Recorre con for...of y compara values para encontrar max y min
-  for (const item of items) {
-    // TODO: Comparar y actualizar maxItem y minItem
+if (lotes.length > 0) {
+  for (const lote of lotes) {
+    // Lógica para encontrar el valor máximo
+    if (lote.value > maxItem.value) {
+        maxItem = lote;
+    }
+    // Lógica para encontrar el valor mínimo
+    if (lote.value < minItem.value) {
+        minItem = lote;
+    }
   }
 
-  // TODO: Imprime los resultados
-  console.log(`Mayor ${valueLabel}: ${maxItem?.name} (${maxItem?.value})`);
-  console.log(`Menor ${valueLabel}: ${minItem?.name} (${minItem?.value})`);
+  console.log(`Lote más fértil: ${maxItem?.name} (${maxItem?.value} mg/kg)`);
+  console.log(`Lote con déficit: ${minItem?.name} (${minItem?.value} mg/kg)`);
 }
 
 console.log("");
@@ -128,16 +102,20 @@ console.log("");
 // ============================================
 // SECCIÓN 6: Reporte numerado con for clásico
 // ============================================
-console.log("=== REPORTE DETALLADO ===");
+console.log("=== REPORTE DETALLADO DE ASESORÍA ===");
 
-// TODO: Usa for clásico para generar el reporte
-// Indica si cada elemento está sobre o bajo el promedio
-for (let i = 0; i < items.length; i++) {
-  const item = items[i];
+for (let i = 0; i < lotes.length; i++) {
+  const lote = lotes[i];
 
-  // TODO: Determina si el item está sobre o bajo el promedio
-  // Pista: usa el operador ternario o if/else
-  const comparison = ""; // TODO: "sobre el promedio" o "bajo el promedio"
+  // Determinamos si el lote está por encima o por debajo del promedio del campo
+  const comparison = lote.value >= averageValue ? "SOBRE EL PROMEDIO ✅" : "BAJO EL PROMEDIO ⚠️";
+
+  // Imprimimos la línea numerada del reporte
+  console.log(`${i + 1}. ${lote.name.padEnd(20)} | Estado: ${comparison}`);
+}
+
+console.log("");
+console.log("=== FIN DEL REPORTE AGROTECH ===");
 
   // TODO: Imprime la línea del reporte
   console.log(`${i + 1}. ${item.name} — ${comparison}`);
